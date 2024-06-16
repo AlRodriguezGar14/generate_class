@@ -7,6 +7,7 @@
 #include <tuple>
 
 int writeHppFile(std::string className, std::vector<std::tuple<std::string, std::string>> classMembers) {
+
     std::ofstream hppFile;
     std::string hppName = className + ".hpp";
     std::string upperClassName = className;
@@ -19,20 +20,30 @@ int writeHppFile(std::string className, std::vector<std::tuple<std::string, std:
         std::cout << "Failed to open file " << hppName << std::endl;
         return (1);
     }
-
     hppFile << "#ifndef " << upperClassName << "_HPP\n";
     hppFile << "#define " << upperClassName << "_HPP\n\n";
     hppFile << "class " << className << " {\n\n";
     hppFile << "public:\n\n";
-    hppFile << "\t" << className << " ();\n";
+    if (!classMembers.empty()) {
+        hppFile << "\t" << className << " (";
+        for (size_t i = 0; i < classMembers.size(); ++i) {
+            hppFile << std::get<0>(classMembers[i]) << " t_" << std::get<1>(classMembers[i]);
+            if (i != classMembers.size() - 1) {
+                hppFile << ", ";
+            }
+        }
+        hppFile << ");\n";
+    } else {
+        hppFile << "\t" << className << " ();\n";
+    }
     hppFile << "\t" << className << " (const " << className << " &t_" << className << ");\n";
     hppFile << "\t~" << className << " ();\n";
     hppFile << "\t" << className << "& operator = (const " << className << " &t_" << className << ");\n\n";
     hppFile << "private:\n";
     hppFile << "\n\n";
-	for (std::tuple<std::string, std::string>& member : classMembers) {
-		hppFile << "\t" << std::get<0>(member) << " m_" << std::get<1>(member) << ";\n";
-	}
+    for (std::tuple<std::string, std::string>& member : classMembers) {
+        hppFile << "\t" << std::get<0>(member) << " m_" << std::get<1>(member) << ";\n";
+    }
     hppFile << "};\n\n";
     hppFile << "#endif\n";
 
@@ -50,7 +61,9 @@ std::string generateDefaultConstructor(const std::string& className, const std::
             constructor << ", ";
         }
     }
-    constructor << ") : ";
+    constructor << ")";
+	if (classMembers.size() != 0)
+		constructor << " : ";
     for (size_t i = 0; i < classMembers.size(); ++i) {
         constructor << "m_" << std::get<1>(classMembers[i]) << "(t_" << std::get<1>(classMembers[i]) << ")";
         if (i != classMembers.size() - 1) {
@@ -141,10 +154,12 @@ int main(int argc, char **argv) {
         classMembers.push_back(std::make_tuple(type, var));
     }
 
+	std::cout << "Building class " << className << "..." << std::endl;
     if (writeHppFile(className, classMembers)) {
         return (1);
     }
     if (writeCppFile(className, classMembers)) {
         return (1);
     }
+	std::cout << className << ".hpp and " << className << ".cpp built successfully." << std::endl;
 }
