@@ -22,8 +22,8 @@ int writeHppFile(std::string className, std::vector<std::tuple<std::string, std:
     }
     hppFile << "#ifndef " << upperClassName << "_HPP\n";
     hppFile << "#define " << upperClassName << "_HPP\n\n";
-    hppFile << "class " << className << " {\n\n";
-    hppFile << "public:\n\n";
+    hppFile << "class " << className << " {\n";
+    hppFile << "public:\n";
     if (!classMembers.empty()) {
         hppFile << "\t" << className << " (";
         for (size_t i = 0; i < classMembers.size(); ++i) {
@@ -40,7 +40,6 @@ int writeHppFile(std::string className, std::vector<std::tuple<std::string, std:
     hppFile << "\t~" << className << " ();\n";
     hppFile << "\t" << className << "& operator = (const " << className << " &t_" << className << ");\n\n";
     hppFile << "private:\n";
-    hppFile << "\n\n";
     for (std::tuple<std::string, std::string>& member : classMembers) {
         hppFile << "\t" << std::get<0>(member) << " m_" << std::get<1>(member) << ";\n";
     }
@@ -71,7 +70,6 @@ std::string generateDefaultConstructor(const std::string& className, const std::
         }
     }
     constructor << " {}\n\n";
-
     return constructor.str();
 }
 
@@ -83,7 +81,6 @@ std::string generateCopyConstructor(const std::string& className, const std::vec
         constructor << "\tm_" << std::get<1>(member) << " = t_" << className << ".m_" << std::get<1>(member) << ";\n";
     }
     constructor << "}\n\n";
-
     return constructor.str();
 }
 
@@ -92,7 +89,6 @@ std::string generateDestructor(const std::string& className) {
 
     destructor << className << "::~" << className << " () {\n\n";
     destructor << "}\n\n";
-
     return destructor.str();
 }
 
@@ -107,7 +103,6 @@ std::string generateAssignmentOperator(const std::string& className, const std::
     assignmentOperator << "\t}\n";
     assignmentOperator << "\treturn (*this);\n";
     assignmentOperator << "}\n\n";
-
     return assignmentOperator.str();
 }
 
@@ -162,4 +157,6 @@ int main(int argc, char **argv) {
         return (1);
     }
 	std::cout << className << ".hpp and " << className << ".cpp built successfully." << std::endl;
+
+	return (1);
 }
