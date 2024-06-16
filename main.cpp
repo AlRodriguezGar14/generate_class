@@ -121,7 +121,7 @@ int writeCppFile(std::string className, std::vector<std::tuple<std::string, std:
 int main(int argc, char **argv) {
     if (argc < 2) {
         std::cout << "Wrong input. Try:" << std::endl;
-        std::cout << "\t./generate_class <ClassName> <\"type var\">..." << std::endl;
+        std::cout << "\t./newClass <ClassName> <\"type var\">..." << std::endl;
         return (1);
     }
     std::string className(argv[1]);
@@ -133,7 +133,7 @@ int main(int argc, char **argv) {
         std::string member(argv[i]);
         if (member.find(" ") == std::string::npos || member.find(" ") == member.size() - 1) {
             std::cout << "Wrong input. Try:" << std::endl;
-            std::cout << "\t./generate_class <ClassName> <\"type var\">..." << std::endl;
+            std::cout << "\t./newClass <ClassName> <\"type var\">..." << std::endl;
             return (1);
         }
         std::string type = member.substr(0, member.find(" "));

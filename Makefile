@@ -6,7 +6,7 @@ SRCS = main.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
-TARGET = generate_class
+TARGET = newClass
 
 all: $(TARGET)
 

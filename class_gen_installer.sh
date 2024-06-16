@@ -1,7 +1,7 @@
 #!/bin/bash
 
-REPO_URL="https://github.com/AlRodriguezGar14/generate_class.git"
-EXECUTABLE="generate_class"
+REPO_URL="https://github.com/AlRodriguezGar14/newClass.git"
+EXECUTABLE="newClass"
 DIR="/tmp/class_generator_alrodriguezgar14"
 
 git clone $REPO_URL $DIR
