@@ -9,6 +9,7 @@ git clone $REPO_URL $DIR
 cd $DIR
 make
 
+rm /usr/local/bin/$EXECUTABLE
 mv $EXECUTABLE /usr/local/bin
 cd ..
 rm -rf $DIR

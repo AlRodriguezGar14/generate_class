@@ -2,7 +2,9 @@ CXX = g++
 
 CXXFLAGS = -Wall -Wextra -Werror -std=c++11 -I ./
 
-SRCS = main.cpp
+SRCS =	writeHpp.cpp \
+		writeCpp.cpp \
+		main.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
