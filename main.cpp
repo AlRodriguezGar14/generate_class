@@ -39,6 +39,64 @@ int writeHppFile(std::string className, std::vector<std::tuple<std::string, std:
     return (0);
 }
 
+std::string generateDefaultConstructor(const std::string& className, const std::vector<std::tuple<std::string, std::string>>& classMembers) {
+    std::ostringstream constructor;
+
+    constructor << className << "::" << className << " (";
+    for (size_t i = 0; i < classMembers.size(); ++i) {
+        constructor << std::get<0>(classMembers[i]) << " t_" << std::get<1>(classMembers[i]);
+        if (i != classMembers.size() - 1) {
+            constructor << ", ";
+        }
+    }
+    constructor << ") : ";
+    for (size_t i = 0; i < classMembers.size(); ++i) {
+        constructor << "m_" << std::get<1>(classMembers[i]) << "(t_" << std::get<1>(classMembers[i]) << ")";
+        if (i != classMembers.size() - 1) {
+            constructor << ", ";
+        }
+    }
+    constructor << " {}\n\n";
+
+    return constructor.str();
+}
+
+std::string generateCopyConstructor(const std::string& className, const std::vector<std::tuple<std::string, std::string>>& classMembers) {
+    std::ostringstream constructor;
+
+    constructor << className << "::" << className << " (const " << className << " &t_" << className << ") {\n";
+    for (const std::tuple<std::string, std::string>& member : classMembers) {
+        constructor << "\tm_" << std::get<1>(member) << " = t_" << className << ".m_" << std::get<1>(member) << ";\n";
+    }
+    constructor << "}\n\n";
+
+    return constructor.str();
+}
+
+std::string generateDestructor(const std::string& className) {
+    std::ostringstream destructor;
+
+    destructor << className << "::~" << className << " () {\n\n";
+    destructor << "}\n\n";
+
+    return destructor.str();
+}
+
+std::string generateAssignmentOperator(const std::string& className, const std::vector<std::tuple<std::string, std::string>>& classMembers) {
+    std::ostringstream assignmentOperator;
+
+    assignmentOperator << className << "& " << className << "::operator = (const " << className << " &t_" << className << ") {\n";
+    assignmentOperator << "\tif (this != &t_" << className << ") {\n";
+    for (const std::tuple<std::string, std::string>& member : classMembers) {
+        assignmentOperator << "\t\tm_" << std::get<1>(member) << " = t_" << className << ".m_" << std::get<1>(member) << ";\n";
+    }
+    assignmentOperator << "\t}\n";
+    assignmentOperator << "\treturn (*this);\n";
+    assignmentOperator << "}\n\n";
+
+    return assignmentOperator.str();
+}
+
 int writeCppFile(std::string className, std::vector<std::tuple<std::string, std::string>> classMembers) {
     std::ofstream cppFile;
     std::string cppName = className + ".cpp";
@@ -50,43 +108,10 @@ int writeCppFile(std::string className, std::vector<std::tuple<std::string, std:
 
     cppFile << "#include \"" << className << ".hpp\"\n\n";
 
-	// Default Constructor
-	cppFile << className << "::" << className << " (";
-	for (size_t i = 0; i < classMembers.size(); ++i) {
-		cppFile << std::get<0>(classMembers[i]) << " t_" << std::get<1>(classMembers[i]);
-		if (i != classMembers.size() - 1) {
-			cppFile << ", ";
-		}
-	}
-	cppFile << ") : ";
-	for (size_t i = 0; i < classMembers.size(); ++i) {
-		cppFile << "m_" << std::get<1>(classMembers[i]) << "(t_" << std::get<1>(classMembers[i]) << ")";
-		if (i != classMembers.size() - 1) {
-			cppFile << ", ";
-		}
-	}
-	cppFile << " {}\n\n";
-
-	// Copy Constructor
-    cppFile << className << "::" << className << " (const " << className << " &t_" << className << ") {\n";
-	for (std::tuple<std::string, std::string>& member : classMembers) {
-		cppFile << "\tm_" << std::get<1>(member) << " = t_" << className << ".m_" << std::get<1>(member) << ";\n";
-	}
-    cppFile << "}\n\n";
-
-	// Destructor
-    cppFile << className << "::~" << className << " () {\n\n";
-    cppFile << "}\n\n";
-
-	// Assignment Operator
-    cppFile << className << "& " << className << "::operator = (const " << className << " &t_" << className << ") {\n";
-    cppFile << "\tif (this != &t_" << className << ") {\n";
-	for (std::tuple<std::string, std::string>& member : classMembers) {
-		cppFile << "\t\tm_" << std::get<1>(member) << " = t_" << className << ".m_" << std::get<1>(member) << ";\n";
-	}
-	cppFile << "\t}\n";
-    cppFile << "\treturn (*this);\n";
-    cppFile << "}\n\n";
+    cppFile << generateDefaultConstructor(className, classMembers);
+    cppFile << generateCopyConstructor(className, classMembers);
+    cppFile << generateDestructor(className);
+    cppFile << generateAssignmentOperator(className, classMembers);
 
     cppFile.close();
     return (0);
@@ -115,10 +140,10 @@ int main(int argc, char **argv) {
         classMembers.push_back(std::make_tuple(type, var));
     }
 
-    if (writeHppFile(className, classMembers) == 1) {
+    if (writeHppFile(className, classMembers)) {
         return (1);
     }
-    if (writeCppFile(className, classMembers) == 1) {
+    if (writeCppFile(className, classMembers)) {
         return (1);
     }
 }
