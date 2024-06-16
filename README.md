@@ -17,6 +17,9 @@ generate_class AwesomeClass "int awesomeInt" "std::string awesomeString"
 ## Installation
 
 [Download the installation script](https://raw.githubusercontent.com/AlRodriguezGar14/generate_class/main/class_gen_installer.sh) and run it, or follow the next steps:
+```bash
+curl -sSL https://raw.githubusercontent.com/AlRodriguezGar14/generate_class/main/class_gen_installer.sh | bash
+```
 
 1. Clone the repository:
 ```bash
