@@ -28,7 +28,7 @@ curl -sSL https://raw.githubusercontent.com/AlRodriguezGar14/newClass/main/class
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/AlRodriguezGar14/newClass.git class_generator
+git clone https://github.com/AlRodriguezGar14/generate_class.git class_generator
 ```
 
 2. Change directory to the cloned repository:
@@ -62,11 +62,12 @@ make clean
 [MIT](https://choosealicense.com/licenses/mit/)
 
 ## What is a Canonical Orthodox class?
-The Canonical Orthodox or Orthodox Canonical Class Form in C++ is a term that refers to a class that implements certain member functions that the C++ compiler can automatically generate. These functions are essential for managing resources, especially when objects of the class are copied or destroyed.  In C++98 this consists of four member functions:  
+
+The Canonical Orthodox or Orthodox Canonical Class Form in C++ is a term that refers to a class that implements certain member functions that the C++ compiler can automatically generate. These functions are essential for managing resources, especially when objects of the class are copied or destroyed. In C++98 this consists of four member functions:
 
 - Default constructor: Constructs a new object and initializes its members.
 - Copy constructor: Constructs a new object as a copy of an existing object.
 - Destructor: Cleans up when an object is destroyed, such as releasing any memory that was allocated.
 - Copy assignment operator: Assigns the value of an existing object to another existing object.
 
-Manually building these functions ensures that they are implement correctly without any unexpected behavior.
+Manually building these functions ensures that they are implemented correctly without any unexpected behavior.

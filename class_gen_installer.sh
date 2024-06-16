@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REPO_URL="https://github.com/AlRodriguezGar14/newClass.git"
+REPO_URL="https://github.com/AlRodriguezGar14/generate_class.git"
 EXECUTABLE="newClass"
 DIR="/tmp/class_generator_alrodriguezgar14"
 
